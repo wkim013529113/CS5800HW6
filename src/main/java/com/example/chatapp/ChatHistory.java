@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ChatHistory {
+public class ChatHistory implements IterableByUser {
     private final List<Message> sent = new ArrayList<>();
     private final List<Message> received = new ArrayList<>();
 
@@ -27,7 +27,11 @@ public class ChatHistory {
         for (Message m : received) {
             if (m.getSender().equals(other)) convo.add(m);
         }
-        // keep natural order of insertion (chronological enough for demo)
         return convo;
+    }
+
+    @Override
+    public java.util.Iterator<Message> iterator(User userToSearchWith) {
+        return new searchMessagesByUser(this, userToSearchWith);
     }
 }
